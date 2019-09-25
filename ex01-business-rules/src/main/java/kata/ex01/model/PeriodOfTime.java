@@ -1,9 +1,7 @@
 package kata.ex01.model;
 
-import kata.ex01.discount.WeekdayMorningAfternoonDiscount;
 import lombok.AllArgsConstructor;
 
-import java.util.Comparator;
 import java.util.stream.Stream;
 
 /**

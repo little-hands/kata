@@ -1,9 +1,9 @@
 package kata.ex01;
 
-import kata.ex01.discount.EtcDiscount;
-import kata.ex01.discount.HolidayDiscount;
-import kata.ex01.discount.NightDiscount;
-import kata.ex01.discount.WeekdayMorningAfternoonDiscount;
+import kata.ex01.model.discount.EtcDiscount;
+import kata.ex01.model.discount.HolidayDiscount;
+import kata.ex01.model.discount.NightDiscount;
+import kata.ex01.model.discount.WeekdayMorningAfternoonDiscount;
 import kata.ex01.model.HighwayDrive;
 
 import java.util.Comparator;
