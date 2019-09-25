@@ -1,0 +1,82 @@
+@startuml
+
+object ETC割引 {
+}
+note right of ETC割引
+  適用可能な休日区分,通過時間帯,
+  車種,エリアタイプを持つ
+end note
+
+object 平日朝夕割引
+note top of 平日朝夕割引
+  時間帯は入口か出口のいずれかが
+  適用可能であれば適用可能
+end note
+平日朝夕割引 --|> ETC割引
+
+object 休日割引
+note top of 休日割引
+  時間帯は入口か出口のいずれかが
+  適用可能であれば適用可能
+end note
+休日割引 --|> ETC割引
+
+object 深夜割引
+note top of 深夜割引
+  入口〜出口の間に深夜時間が
+  含まれれば適用可能
+end note
+深夜割引 --|> ETC割引
+
+
+object 走行期間 {
+  入口通過時間
+  出口通過時間
+}
+note left of 走行期間
+  走行時間は
+  24時間を超えない
+end note
+ETC割引 --> 走行期間
+
+object 休日区分
+note bottom of 休日区分
+  平日/祝日
+end note
+ETC割引 --> 休日区分
+
+object 通過日時 {
+  日時
+}
+note bottom of 通過日時
+  通過時間帯、休日区分を返す
+end note
+走行期間 --> 通過日時
+通過日時 --> 休日区分
+
+object 通過時間帯
+note bottom of 通過時間帯
+   0:00- 4:00 深夜
+   6:00- 9:00 朝
+  17:00-20:00 夕方
+           他 その他
+end note
+ETC割引 --> 通過時間帯
+通過日時 --> 通過時間帯
+
+object 車種
+note bottom of 車種
+  普通車/軽自動車/
+  二輪車/その他
+end note
+ETC割引 --> 車種
+
+object エリアタイプ
+note bottom of エリアタイプ
+  地方部/都市部
+end note
+ETC割引 --> エリアタイプ
+
+
+
+@enduml
