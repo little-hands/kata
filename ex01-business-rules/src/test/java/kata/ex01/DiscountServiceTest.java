@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 import static kata.ex01.model.RouteType.RURAL;
+import static kata.ex01.model.RouteType.URBAN;
+import static kata.ex01.model.VehicleFamily.OTHER;
 import static kata.ex01.model.VehicleFamily.STANDARD;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,6 +49,32 @@ public class DiscountServiceTest {
         drive.setDriver(driver(10));
         drive.setVehicleFamily(STANDARD);
         drive.setRouteType(RURAL);
+
+        assertThat(discountService.calc(drive)).isEqualTo(30);
+    }
+
+
+    @Test
+    public void test深夜に出るとは深夜割が適用される() {
+        HighwayDrive drive = new HighwayDrive();
+        drive.setEnteredAt(LocalDateTime.of(2016, 3, 31, 23, 0));
+        drive.setExitedAt(LocalDateTime.of(2016, 4, 1, 1, 0));
+        drive.setDriver(driver(10));
+        drive.setVehicleFamily(OTHER);
+        drive.setRouteType(URBAN);
+
+        assertThat(discountService.calc(drive)).isEqualTo(30);
+    }
+
+
+    @Test
+    public void test深夜の前後に入出すると深夜割が適用される() {
+        HighwayDrive drive = new HighwayDrive();
+        drive.setEnteredAt(LocalDateTime.of(2016, 3, 31, 23, 0));
+        drive.setExitedAt(LocalDateTime.of(2016, 4, 1, 5, 0));
+        drive.setDriver(driver(10));
+        drive.setVehicleFamily(OTHER);
+        drive.setRouteType(URBAN);
 
         assertThat(discountService.calc(drive)).isEqualTo(30);
     }

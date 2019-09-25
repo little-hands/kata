@@ -1,31 +1,34 @@
 package kata.ex01.discount;
 
 import kata.ex01.model.HighwayDrive;
-import kata.ex01.util.HolidayUtils;
+import kata.ex01.model.VehicleFamily;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static kata.ex01.model.HolidayType.HOLIDAY;
+import static kata.ex01.model.DayType.WEEKDAY;
+import static kata.ex01.model.PeriodOfTime.EVENING;
+import static kata.ex01.model.PeriodOfTime.MORNING;
 import static kata.ex01.model.RouteType.RURAL;
-import static kata.ex01.model.RouteType.URBAN;
-import static kata.ex01.model.VehicleFamily.STANDARD;
 
 public class WeekdayMorningAfternoonDiscount extends EtcDiscount {
 
   public WeekdayMorningAfternoonDiscount() {
-    super.appliableVehicleFamilies = List.of(STANDARD);
-    super.appliableRouteTypes = List.of(RURAL, URBAN);
-    super.appliableHolidayTypes = List.of(HOLIDAY);
+    super.appliableVehicleFamilies = List.of(VehicleFamily.values());
+    super.appliableRouteTypes = List.of(RURAL);
+    super.appliableDayTypes = List.of(WEEKDAY);
+    super.appliablePeriodOfTimes = List.of(MORNING, EVENING);
   }
 
   private boolean isAppliable(HighwayDrive highwayDrive) {
     return
         isAppliableVehicleFamily(highwayDrive.getVehicleFamily())
             && isAppliableRouteType(highwayDrive.getRouteType())
-            && !HolidayUtils.isHoliday(highwayDrive.getEnteredAt().toLocalDate())
-            && !HolidayUtils.isHoliday(highwayDrive.getExitedAt().toLocalDate());
+            && (isApplicablePassingTime(highwayDrive.getEnteredAt())
+            || isApplicablePassingTime(highwayDrive.getExitedAt()));
   }
 
   @Override
@@ -37,6 +40,8 @@ public class WeekdayMorningAfternoonDiscount extends EtcDiscount {
   }
 
 
+  @AllArgsConstructor
+  @Getter
   private enum UsingCountDiscountPattern {
     lessThan5(0, 0),
     lessThan10(5, 30),
@@ -45,12 +50,6 @@ public class WeekdayMorningAfternoonDiscount extends EtcDiscount {
     private int minimumCount;
     private long discountRate;
 
-
-    UsingCountDiscountPattern(int minimumCount, long discountRate) {
-      this.minimumCount = minimumCount;
-      this.discountRate = discountRate;
-    }
-
     static UsingCountDiscountPattern of(int usingCount) {
       return Stream.of(UsingCountDiscountPattern.values())
           .sorted(Comparator.comparing(UsingCountDiscountPattern::getMinimumCount, Comparator.reverseOrder()))
@@ -58,8 +57,5 @@ public class WeekdayMorningAfternoonDiscount extends EtcDiscount {
           .findFirst().get();
     }
 
-    public int getMinimumCount() {
-      return minimumCount;
-    }
   }
 }

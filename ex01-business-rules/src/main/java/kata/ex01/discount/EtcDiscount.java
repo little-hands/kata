@@ -1,24 +1,36 @@
 package kata.ex01.discount;
 
-import kata.ex01.model.HighwayDrive;
-import kata.ex01.model.HolidayType;
-import kata.ex01.model.RouteType;
-import kata.ex01.model.VehicleFamily;
+import kata.ex01.model.*;
 
 import java.util.List;
 
 public abstract class EtcDiscount {
-  protected List<VehicleFamily> appliableVehicleFamilies;
-  protected List<RouteType> appliableRouteTypes;
-  protected List<HolidayType> appliableHolidayTypes;
+  List<VehicleFamily> appliableVehicleFamilies;
+  List<RouteType> appliableRouteTypes;
+  List<DayType> appliableDayTypes;
+  List<PeriodOfTime> appliablePeriodOfTimes;
 
-  protected boolean isAppliableVehicleFamily(VehicleFamily vehicleFamily) {
+  boolean isAppliableVehicleFamily(VehicleFamily vehicleFamily) {
     return appliableVehicleFamilies.contains(vehicleFamily);
   }
 
-  protected boolean isAppliableRouteType(RouteType routeType) {
+  boolean isAppliableRouteType(RouteType routeType) {
     return appliableRouteTypes.contains(routeType);
   }
+
+  private boolean isAppliableDayType(DayType dayType) {
+    return appliableDayTypes.contains(dayType);
+  }
+
+  private boolean isAppliablePeriodOfTime(PeriodOfTime periodOfTime) {
+    return appliablePeriodOfTimes.contains(periodOfTime);
+  }
+
+  boolean isApplicablePassingTime(PassingTime passingTime) {
+    return isAppliableDayType(passingTime.getDayType())
+        && isAppliablePeriodOfTime(passingTime.getPeriodOfTime());
+  }
+
 
   public abstract long calcDiscountRate(HighwayDrive highwayDrive);
 

@@ -17,12 +17,12 @@ public class HighwayDrive implements Serializable {
     public HighwayDrive() {
     }
 
-    public LocalDateTime getEnteredAt() {
-        return this.enteredAt;
+    public PassingTime getEnteredAt() {
+        return new PassingTime(this.enteredAt);
     }
 
-    public LocalDateTime getExitedAt() {
-        return this.exitedAt;
+    public PassingTime getExitedAt() {
+        return new PassingTime(this.exitedAt);
     }
 
     public VehicleFamily getVehicleFamily() {

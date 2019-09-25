@@ -1,30 +1,31 @@
 package kata.ex01.discount;
 
 import kata.ex01.model.HighwayDrive;
-import kata.ex01.util.HolidayUtils;
+import kata.ex01.model.PeriodOfTime;
 
 import java.util.List;
 
-import static kata.ex01.model.HolidayType.HOLIDAY;
+import static kata.ex01.model.DayType.HOLIDAY;
 import static kata.ex01.model.RouteType.RURAL;
-import static kata.ex01.model.RouteType.URBAN;
-import static kata.ex01.model.VehicleFamily.STANDARD;
+import static kata.ex01.model.VehicleFamily.*;
 
 public class HolidayDiscount extends EtcDiscount {
 
   public HolidayDiscount() {
-    super.appliableVehicleFamilies = List.of(STANDARD);
-    super.appliableRouteTypes = List.of(RURAL, URBAN);
-    super.appliableHolidayTypes = List.of(HOLIDAY);
+    super.appliableVehicleFamilies = List.of(STANDARD, MINI, MOTORCYCLE);
+    super.appliableRouteTypes = List.of(RURAL);
+    super.appliableDayTypes = List.of(HOLIDAY);
+    super.appliablePeriodOfTimes = List.of(PeriodOfTime.values());
   }
 
   private boolean isAppliable(HighwayDrive highwayDrive) {
     return
         isAppliableVehicleFamily(highwayDrive.getVehicleFamily())
             && isAppliableRouteType(highwayDrive.getRouteType())
-            && (HolidayUtils.isHoliday(highwayDrive.getEnteredAt().toLocalDate())
-            || HolidayUtils.isHoliday(highwayDrive.getExitedAt().toLocalDate()));
+            && (isApplicablePassingTime(highwayDrive.getEnteredAt())
+            || isApplicablePassingTime(highwayDrive.getExitedAt()));
   }
+
 
   @Override
   public long calcDiscountRate(HighwayDrive highwayDrive) {
